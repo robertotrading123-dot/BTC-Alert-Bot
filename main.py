@@ -23,20 +23,18 @@ def format_message(signal: dict) -> str:
     reasons = signal.get("reasons", [])
     reason_text = " | ".join(reasons[:4]) if reasons else "Technical signal generated."
     return (
-        f"*BTC Alert — {signal['direction']}*\n"
-        f"Timestamp: {signal['timestamp']}\n"
-        f"Price: `${signal['current_price']}`\n"
-        f"Entry: `${signal['entry_price']}`\n"
-        f"Stop Loss: `${signal['stop_loss']}`\n"
-        f"Take Profit: `${signal['take_profit']}`\n"
-        f"Confidence: *{signal['confidence']}%*\n"
-        f"RSI(14): {signal['rsi']} | MACD hist: {signal['macd_hist']}\n"
-        f"EMA20: {signal['ema20']} | EMA50: {signal['ema50']}\n"
-        f"BB upper: {signal['bb_upper']} | BB lower: {signal['bb_lower']}\n"
-        f"ATR(14): {signal['atr']}\n"
-        f"Volume: {signal['volume']} | Avg: {signal['volume_ma']}\n"
-        f"_Why: {reason_text}_"
-    )
+    f"🚨══════════════════🚨\n"
+    f"📊 BTC ALERTA\n\n"
+    f"{'🟢 COMPRA' if signal['direction'] == 'BUY' else '🔴 VENTA'}\n\n"
+    f"💰 Precio: ${signal['current_price']}\n"
+    f"🎯 Entrada: ${signal['entry_price']}\n"
+    f"🛑 Stop Loss: ${signal['stop_loss']}\n"
+    f"💎 Take Profit: ${signal['take_profit_1']}\n"
+    f"🔥 Confianza: {signal['confidence']}%\n"
+    f"📈 Razones:\n{reason_text}\n\n"
+    f"🕒 {signal['timestamp']}\n"
+    f"🚀 BTC Alert Bot"
+)
 
 
 def run_bot() -> None:
