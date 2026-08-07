@@ -15,18 +15,23 @@ def build_signal(klines: list[dict]) -> dict:
     ema20 = ema(closes, 20)[-1]
     ema50 = ema(closes, 50)[-1]
     rsi14 = rsi(closes, 14)[-1]
+
     macd_line, signal_line, hist = macd(closes)
     macd_value = macd_line[-1]
     macd_signal = signal_line[-1]
     macd_hist = hist[-1]
+
     bb_mid, bb_upper, bb_lower = bollinger_bands(closes, 20)
     bb_mid_value = bb_mid[-1]
     bb_upper_value = bb_upper[-1]
     bb_lower_value = bb_lower[-1]
+
     atr_values = atr(highs, lows, closes, 14)
     atr_value = atr_values[-1]
     atr_ma = sma(atr_values, 14)[-1] if len(atr_values) >= 14 else atr_value
+
     volume_ma = sma(volumes, 20)[-1]
+
     last_close = closes[-1]
     previous_close = closes[-2]
 
@@ -98,16 +103,22 @@ def build_signal(klines: list[dict]) -> dict:
     confidence = min(100, max(0, abs(score)))
 
     entry_price = round(last_close, 2)
-    stop_loss = round(last_close - atr_value * 1.5, 2) if direction == "BUY" else round(last_close + atr_value * 1.5, 2)
-    take_profit = round(last_close + atr_value * 3, 2) if direction == "BUY" else round(last_close - atr_value * 3, 2)
-take_profit_1 = round(last_close + atr_value * 2, 2)
-take_profit_2 = round(last_close + atr_value * 3, 2)
-take_profit_3 = round(last_close + atr_value * 4, 2)
 
-if direction == "SELL":
-    take_profit_1 = round(last_close - atr_value * 2, 2)
-    take_profit_2 = round(last_close - atr_value * 3, 2)
-    take_profit_3 = round(last_close - atr_value * 4, 2)
+    stop_loss = (
+        round(last_close - atr_value * 1.5, 2)
+        if direction == "BUY"
+        else round(last_close + atr_value * 1.5, 2)
+    )
+
+    if direction == "BUY":
+        take_profit_1 = round(last_close + atr_value * 2, 2)
+        take_profit_2 = round(last_close + atr_value * 3, 2)
+        take_profit_3 = round(last_close + atr_value * 4, 2)
+    else:
+        take_profit_1 = round(last_close - atr_value * 2, 2)
+        take_profit_2 = round(last_close - atr_value * 3, 2)
+        take_profit_3 = round(last_close - atr_value * 4, 2)
+
     return {
         "direction": direction,
         "current_price": round(last_close, 2),
