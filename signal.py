@@ -100,13 +100,22 @@ def build_signal(klines: list[dict]) -> dict:
     entry_price = round(last_close, 2)
     stop_loss = round(last_close - atr_value * 1.5, 2) if direction == "BUY" else round(last_close + atr_value * 1.5, 2)
     take_profit = round(last_close + atr_value * 3, 2) if direction == "BUY" else round(last_close - atr_value * 3, 2)
+take_profit_1 = round(last_close + atr_value * 2, 2)
+take_profit_2 = round(last_close + atr_value * 3, 2)
+take_profit_3 = round(last_close + atr_value * 4, 2)
 
+if direction == "SELL":
+    take_profit_1 = round(last_close - atr_value * 2, 2)
+    take_profit_2 = round(last_close - atr_value * 3, 2)
+    take_profit_3 = round(last_close - atr_value * 4, 2)
     return {
         "direction": direction,
         "current_price": round(last_close, 2),
         "entry_price": entry_price,
         "stop_loss": stop_loss,
-        "take_profit": take_profit,
+        "take_profit_1": take_profit_1,
+        "take_profit_2": take_profit_2,
+        "take_profit_3": take_profit_3,
         "confidence": confidence,
         "rsi": round(rsi14, 1),
         "macd_hist": round(macd_hist, 5),
